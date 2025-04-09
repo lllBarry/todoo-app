@@ -2,6 +2,7 @@ import axios from "axios"
 import Swal from 'sweetalert2'
 
 const TOKEN_NAME = "user_token"
+
 const Main = () => ({
     showSection : "taskSection",
     email: "",
@@ -70,11 +71,21 @@ const Main = () => ({
         // 傳 token 給API
         const token = localStorage.getItem(TOKEN_NAME)
         if(token){
-            axios.defaults.headers.common["Authorization"]=token
-            const resp = await axios.delete(url)
-            console.log(resp);
+            // axios.defaults.headers.common["Authorization"]=token
+            
+            try {
+                const config = { headers: { Authorization: token } }
+                await axios.delete(url, config)
+            } catch {
+                // 處理錯誤
+            } finally {
+                // 總是會做
+                this.isLogin = false
+                localStorage.removeItem(TOKEN_NAME)
+                this.showLogin()
+            }
         }
-        
+
 
     },
     async login(){
