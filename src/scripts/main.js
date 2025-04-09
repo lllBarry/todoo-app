@@ -9,18 +9,19 @@ const Main = () => ({
     nickname: "",
     password: "",
     isLogin: false,
-
+    todos:[],
+    task:"",
     // 關注 DATA Driven
     init(){
         // 檢查是否有token
         // 如果有token 設定為已登入
-        console.log(123);
         const token = localStorage.getItem(TOKEN_NAME)
         if(token){
             this.isLogin= true
             this.showTaskInput()
+            this.getTodos()
         }
-        console.log(token);
+        // console.log(token);
     },
     clearText(){
         this.email = ""
@@ -35,6 +36,74 @@ const Main = () => ({
     },
     showTaskInput(){
         this.showSection = "taskSection"
+    },
+    async deleteTodo(id){
+        // const { id } = this.$el.dataset
+        const token = localStorage.getItem(TOKEN_NAME)
+        
+        if( token ){
+            const url = `https://todoo.5xcamp.us/todos/${id}`
+            const config = { headers: { Authorization: token } }
+            this.$el.parentNode.parentNode.remove()
+
+            try{
+                await axios.delete(url, config)
+                // this.getTodos()
+            } catch (err) {
+                Swal.fire({
+                    title: 'Error!',
+                    html: "無法刪除",
+                    icon: 'error',
+                    confirmButtonText: '確認'
+                  })
+            }
+        }
+    },
+    async addTodo(){
+        const token = localStorage.getItem(TOKEN_NAME)
+
+        if(token && this.task != ""){
+            const url = "https://todoo.5xcamp.us/todos"
+            const todoData = {
+                todo:{
+                    content: this.task,
+                },
+            }
+            const config = { headers: { Authorization: token } }
+            
+            try{
+                const { data } = await axios.post(url, todoData, config)
+                this.task=""
+                this.todos.unshift(data)
+            }catch(err){
+                Swal.fire({
+                    title: 'Error!',
+                    html: err,
+                    icon: 'error',
+                    confirmButtonText: '確認'
+                  })
+            }
+        }
+    },
+    async getTodos(){
+        const url = "https://todoo.5xcamp.us/todos"
+        const token = localStorage.getItem(TOKEN_NAME)
+        if(token){
+            const config = { headers: { Authorization: token } }
+            
+            try{
+                const { data: {todos} } = await axios.get(url, config)
+                // console.log(todos);
+                this.todos = todos
+            } catch (err){
+                Swal.fire({
+                    title: 'Error!',
+                    html: "無法載入，請稍後再試",
+                    icon: 'error',
+                    confirmButtonText: '確認'
+                  })
+            }
+        }
     },
     async signUp(){
         if (this.email !="" && this.nickname !="" && this.password !=""){
@@ -83,6 +152,7 @@ const Main = () => ({
                 this.isLogin = false
                 localStorage.removeItem(TOKEN_NAME)
                 this.showLogin()
+                this.todos=[]
             }
         }
 
@@ -99,7 +169,7 @@ const Main = () => ({
             try{
                 const resp = await axios.post("https://todoo.5xcamp.us/users/sign_in",userData)
                 const token = resp.headers.authorization
-                console.log(token);
+                // console.log(token);
                 // 存token (jwt)
                 // 瀏覽器內有 Cookie容量較小(4k) / LocalStorage容量較大 可以存token
                 // localStorage .getItem()
@@ -110,7 +180,12 @@ const Main = () => ({
                 this.showTaskInput()
             }catch (err){
                 const errText = err.response.data.error
-                console.log(errText);
+                Swal.fire({
+                    title: 'Error!',
+                    html: "登入失敗",
+                    icon: 'error',
+                    confirmButtonText: '確認'
+                  })
             }
         }
     }

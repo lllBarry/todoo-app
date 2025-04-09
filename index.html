@@ -110,121 +110,34 @@
       <!-- TODO Section start -->
       <section id="taskSection" x-show="showSection == 'taskSection'">
         <form id="todoForm">
-          <input type="text" id="taskInput" autocomplete="off" spellcheck="false" placeholder="做點重要的事吧..." />
-          <button id="addTodoBtn">新增</button>
+          <input x-model="task" type="text" id="taskInput" autocomplete="off" spellcheck="false" placeholder="做點重要的事吧..." />
+          <button @click.prevent="addTodo" class="cursor-pointer" id="addTodoBtn">新增</button>
         </form>
       </section>
       <!-- TODO Section end -->
+      <section class="todo-list">
+        <ul class="items">
+
+          <!-- item start -->
+            <template x-for="todo in todos">
+             <li class="completed">
+               <div class="item-content">
+                 <label>
+                   <input type="checkbox" checked />
+                   <p x-text="todo.content" class="content"></p>
+                  </label>
+                </div>
+                <div class="item-control">
+                  <a href="#" class="edit"><img class="icon" src="src/assets/pen-to-square-solid.svg" /></a>
+                  <a :data-id="todo.id" @click.prevent="deleteTodo(todo.id)" href="#" class="delete"><img class="icon" src="src/assets/trash-can-solid.svg" /></a>
+                </div>
+              </li>
+            </template>
+            <!-- item end -->
+        </ul>
+      </section>
     </main>
 
-    <section class="todo-list">
-      <ul class="items">
-        <!-- item start -->
-        <li>
-          <div class="item-content">
-            <label>
-              <input type="checkbox" />
-              <p class="content">我要學 Python</p>
-            </label>
-          </div>
-          <div class="item-control">
-            <a href="#" class="edit"><img class="icon" src="src/assets/pen-to-square-solid.svg" /></a>
-            <a href="#" class="delete"><img class="icon" src="src/assets/trash-can-solid.svg" /></a>
-          </div>
-        </li>
-        <!-- item end -->
-
-        <!-- item start -->
-        <li>
-          <div class="item-content">
-            <label>
-              <input type="checkbox" />
-              <p class="content">我要學 Ruby on Rails</p>
-            </label>
-          </div>
-          <div class="item-control">
-            <a href="#" class="edit"><img class="icon" src="src/assets/pen-to-square-solid.svg" /></a>
-            <a href="#" class="delete"><img class="icon" src="src/assets/trash-can-solid.svg" /></a>
-          </div>
-        </li>
-        <!-- item end -->
-
-        <!-- item start -->
-        <li class="completed">
-          <div class="item-content">
-            <label>
-              <input type="checkbox" checked />
-              <p class="content">我要學 Git</p>
-            </label>
-          </div>
-          <div class="item-control">
-            <a href="#" class="edit"><img class="icon" src="src/assets/pen-to-square-solid.svg" /></a>
-            <a href="#" class="delete"><img class="icon" src="src/assets/trash-can-solid.svg" /></a>
-          </div>
-        </li>
-        <!-- item end -->
-
-        <!-- item start -->
-        <li>
-          <div class="item-content">
-            <label>
-              <input type="checkbox" />
-              <p class="content">我要學 JavaScript</p>
-            </label>
-          </div>
-          <div class="item-control">
-            <a href="#" class="edit"><img class="icon" src="src/assets/pen-to-square-solid.svg" /></a>
-            <a href="#" class="delete"><img class="icon" src="src/assets/trash-can-solid.svg" /></a>
-          </div>
-        </li>
-        <!-- item end -->
-
-        <!-- item start -->
-        <li>
-          <div class="item-content">
-            <label>
-              <input type="checkbox" />
-              <p class="content">我要學 React</p>
-            </label>
-          </div>
-          <div class="item-control">
-            <a href="#" class="edit"><img class="icon" src="src/assets/pen-to-square-solid.svg" /></a>
-            <a href="#" class="delete"><img class="icon" src="src/assets/trash-can-solid.svg" /></a>
-          </div>
-        </li>
-        <!-- item end -->
-
-        <!-- item start -->
-        <li>
-          <div class="item-content">
-            <label>
-              <input type="checkbox" />
-              <p class="content">我要學 Vue</p>
-            </label>
-          </div>
-          <div class="item-control">
-            <a href="#" class="edit"><img class="icon" src="src/assets/pen-to-square-solid.svg" /></a>
-            <a href="#" class="delete"><img class="icon" src="src/assets/trash-can-solid.svg" /></a>
-          </div>
-        </li>
-        <!-- item end -->
-
-        <!-- item start -->
-        <li class="completed">
-          <div class="item-content">
-            <label>
-              <input type="checkbox" checked />
-              <p class="content">我要發大財</p>
-            </label>
-          </div>
-          <div class="item-control">
-            <a href="#" class="edit"><img class="icon" src="src/assets/pen-to-square-solid.svg" /></a>
-            <a href="#" class="delete"><img class="icon" src="src/assets/trash-can-solid.svg" /></a>
-          </div>
-        </li>
-        <!-- item end -->
-      </ul>
-    </section>
     <footer>
       <p>
         powered by
