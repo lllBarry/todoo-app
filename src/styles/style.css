@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap");
 @import "tailwindcss";
+@plugin "daisyui";
 
 .form-checkbox {
   @apply w-6 h-6;

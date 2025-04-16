@@ -3,5 +3,7 @@ import axios from "axios"
 import Main from "./main"
 window.Alpine = Alpine
 Alpine.data("Main",Main)
-
+Alpine.store("",{
+    todos:[],
+})
 Alpine.start()

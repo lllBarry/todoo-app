@@ -26,6 +26,20 @@
     </header>
 
     <main class="px-6 todo-app main" x-data="Main">
+      <!-- <button class="btn" onclick="my_modal_1.showModal()">open modal</button> -->
+        <dialog x-ref="modal" data-id="" class="modal">
+          <div class="modal-box">
+            <h3 class="text-lg font-bold">Hello!</h3>
+            <input x-model="todoText" type="text" class="input input-bordered w-full mt-4">
+            <div class="modal-action">
+              <form method="dialog">
+                <!-- if there is a button in form, it will close the modal -->
+                <button class="btn">取消</button>
+              </form>
+              <button @click.prevent="updateTodo" class="btn btn-neutral">確認</button>
+            </div>
+          </div>
+        </dialog>
       <header>
         <nav class="navbar">
           <template x-if="!isLogin">
@@ -123,19 +137,21 @@
              <li class="completed">
                <div class="item-content">
                  <label>
-                   <input type="checkbox" checked />
+                   <input type="checkbox"  @click="toggleTodo(todo.id)" :checked="todo.completed_at" />
                    <p x-text="todo.content" class="content"></p>
                   </label>
                 </div>
                 <div class="item-control">
-                  <a href="#" class="edit"><img class="icon" src="src/assets/pen-to-square-solid.svg" /></a>
+                  <a @click.prevent="editTodo(todo.id)" href="#" class="edit"><img class="icon" src="src/assets/pen-to-square-solid.svg" /></a>
                   <a :data-id="todo.id" @click.prevent="deleteTodo(todo.id)" href="#" class="delete"><img class="icon" src="src/assets/trash-can-solid.svg" /></a>
                 </div>
+    
               </li>
             </template>
             <!-- item end -->
         </ul>
       </section>
+
     </main>
 
     <footer>
