@@ -105,26 +105,29 @@ const Main = () => ({
     },
     async deleteTodo(id){
         // const { id } = this.$el.dataset
-        const token = localStorage.getItem(TOKEN_NAME)
-        
-        if( token ){
-            const url = `https://todoo.5xcamp.us/todos/${id}`
-            const config = { headers: { Authorization: token } }
-            // this.$el.parentNode.parentNode.remove()
-            // 只刪除介面上的資料 => 資料與畫面不相符
-            removeTodo(this.todos, id)
-
-
-            try{
-                await axios.delete(url, config)
-                // this.getTodos()
-            } catch (err) {
-                Swal.fire({
-                    title: 'Error!',
-                    html: "無法刪除",
-                    icon: 'error',
-                    confirmButtonText: '確認'
-                  })
+        if (confirm("確認刪除？")) {
+            
+            const token = localStorage.getItem(TOKEN_NAME)
+            
+            if( token ){
+                const url = `https://todoo.5xcamp.us/todos/${id}`
+                const config = { headers: { Authorization: token } }
+                // this.$el.parentNode.parentNode.remove()
+                // 只刪除介面上的資料 => 資料與畫面不相符
+                removeTodo(this.todos, id)
+                
+                
+                try{
+                    await axios.delete(url, config)
+                    // this.getTodos()
+                } catch (err) {
+                    Swal.fire({
+                        title: 'Error!',
+                        html: "無法刪除",
+                        icon: 'error',
+                        confirmButtonText: '確認'
+                    })
+                }
             }
         }
     },
